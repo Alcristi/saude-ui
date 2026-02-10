@@ -2,6 +2,11 @@
 
 Teste técnico
 
+## Production
+
+The application is deployed on Vercel at:
+[https://saude-ui.vercel.app/](https://saude-ui.vercel.app/)
+
 ## Install the dependencies
 
 ```bash
