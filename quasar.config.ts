@@ -4,6 +4,7 @@
 import { defineConfig } from '#q-app/wrappers';
 
 export default defineConfig((/* ctx */) => {
+  console.log('DEBUG: API_URL in config:', process.env.API_URL);
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
