@@ -6,6 +6,7 @@ import {
   createWebHistory,
 } from 'vue-router';
 import routes from './routes';
+import { useAuthStore } from 'stores/auth';
 
 /*
  * If not building with SSR mode, you can
@@ -31,6 +32,32 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  Router.beforeEach(async (to, from, next) => {
+    const authStore = useAuthStore();
+    const token = localStorage.getItem('token');
+
+    const isTokenValidString = token && token !== 'undefined' && token !== 'null';
+
+    if (isTokenValidString && !authStore.user) {
+      authStore.token = token;
+      await authStore.checkAuth();
+    }
+
+    const isAuthenticated = authStore.isAuthenticated;
+
+    if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+      next({ path: '/login' });
+      return;
+    }
+
+    if (to.matched.some(record => record.meta.guestOnly) && isAuthenticated) {
+      next({ path: '/' });
+      return;
+    }
+
+    next();
   });
 
   return Router;

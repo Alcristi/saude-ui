@@ -4,18 +4,26 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title> TiSaude </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+      <q-scroll-area style="height: calc(100% - 50px); margin-top: 50px; border-right: 1px solid #ddd">
+        <q-list>
+          <q-item-label header>
+            Menu
+          </q-item-label>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
+          <Menu
+            v-for="link in essentialLinks"
+            :key="link.title"
+            v-bind="link"
+          />
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
@@ -26,50 +34,55 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
+import Menu, { MenuProps } from 'components/Menu.vue';
+import { useAuthStore } from 'stores/auth';
+import { useRouter } from 'vue-router';
 
-const linksList: EssentialLinkProps[] = [
+const authStore = useAuthStore();
+const router = useRouter();
+
+const essentialLinks: MenuProps[] = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
+    title: 'Usuários',
+    caption: 'Gerenciar usuários',
+    icon: 'admin_panel_settings',
+    link: '/usuarios',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
+    title: 'Especialidades',
+    caption: 'Gerenciar especialidades',
+    icon: 'medical_services',
+    link: '/especialidades',
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
+    title: 'Planos de Saúde',
+    caption: 'Gerenciar planos',
+    icon: 'health_and_safety',
+    link: '/planos-saude',
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
+    title: 'Procedimentos',
+    caption: 'Gerenciar procedimentos',
+    icon: 'healing',
+    link: '/procedimentos',
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
+    title: 'Pacientes',
+    caption: 'Gerenciar pacientes',
+    icon: 'person',
+    link: '/pacientes',
   },
   {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
+    title: 'Médicos',
+    caption: 'Gerenciar médicos',
+    icon: 'supervisor_account',
+    link: '/medicos',
   },
   {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
+    title: 'Contratos',
+    caption: 'Gerenciar contratos',
+    icon: 'description',
+    link: '/contratos',
   },
 ];
 
